@@ -9,9 +9,7 @@ git-automation/
 ├── gitflow.py          # Main script — interactive git workflow
 ├── gitflow.bat         # Windows launcher (double-click or run from cmd)
 ├── requirements.txt    # Python dependencies
-├── testxml/            # XML test fixtures (test1.xml … test10.xml)
-└── src/
-    └── Main.java       # IntelliJ scratch file (not part of the workflow)
+└── testxml/            # XML test fixtures (test1.xml … test10.xml)
 ```
 
 ## Requirements
