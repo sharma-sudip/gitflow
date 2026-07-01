@@ -3,7 +3,15 @@
 
 import subprocess
 import sys
-
+import pydevd_pycharm
+# uncomment for debugging
+# pydevd_pycharm.settrace(
+#     "localhost",
+#     port=8062,
+#     stdout_to_server=True,
+#     stderr_to_server=True,
+#     suspend=False,
+# )
 try:
     import questionary
 except ImportError:
@@ -87,8 +95,12 @@ def create_branch():
 # ── Stage files ────────────────────────────────────────────────────────────────
 
 def stage_files():
+    import re
+    _ansi = re.compile(r"\x1b\[[0-9;]*m")
+
     result = git("-c", "color.status=false", "status", "--short", "--porcelain", capture=True)
-    lines = result.stdout.strip().splitlines()
+    raw_lines = result.stdout.strip().splitlines()
+    lines = [_ansi.sub("", l) for l in raw_lines]
     if not lines:
         print("Nothing to stage — working tree is clean.")
         return False
@@ -99,7 +111,7 @@ def stage_files():
     choices = []
     for line in lines:
         status = line[:2]
-        path = line[3:].strip()
+        path = line[2:].strip()
         paths.append(path)
         choices.append(questionary.Choice(title=f"{status}  {path}", value=len(paths)))
 
